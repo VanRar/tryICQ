@@ -31,9 +31,7 @@ public class Server {
         //проверяем наличие настроек сервера и заполняем их
         installationSettingsProperties();
         //запускаем сервер и ждем подключения клиентов в многопоточном режиме
-        //clientConnection(startServer());
         startServer();
-
 
     }
     public static void setupLogger(){
@@ -51,7 +49,6 @@ public class Server {
     }
 
     public static void installationSettingsProperties() {
-        //по хорошему надо сначала показать существующие настройки
         boolean thereAreSettings = false;
         Properties settings = new Properties();
         try {
@@ -81,8 +78,7 @@ public class Server {
     }
 
     public static void settServerSettings(){
-        //        Установка порта для подключения клиентов через файл настроек (например, settings.txt);
-        System.out.println("Для запуска сервера введите хост");//хотя по идее всегда будет сервер запущенной машины, но пусть будет
+        System.out.println("Для запуска сервера введите хост");//хотя по идее всегда будет хост запущенной машины, но пусть будет
         String h = "host=" + scanner.nextLine();
         System.out.println("Для запуска сервера введите порт");
         String p = "port=" + scanner.nextLine();
@@ -146,106 +142,3 @@ public class Server {
         return " { " + dTime + " } ";
     }
 }
-/* в одном потоке */
-//      получается так не получается, так как сервак закрывается, если его реализовывать в другом блоке try
-
-//        public static void clientConnection(ServerSocket serverSocket) {
-//        while (true) {
-//            if(serverSocket == null) {
-//                System.out.println("Сервер не был запущен");
-//                break;
-//            }
-//            try (//подключение клиента
-//                 Socket client = serverSocket.accept()) {
-//                //для записи клиенту
-//                BufferedWriter writer =
-//                        new BufferedWriter(
-//                                new OutputStreamWriter(
-//                                        client.getOutputStream()));
-//                //для чтения клиента
-//                BufferedReader reader =
-//                        new BufferedReader(
-//                                new InputStreamReader(
-//                                        client.getInputStream()));
-//                //пока без потоков:
-//                System.out.println("Клиент подключился");
-//                //посмотрим запрос клиента
-//                String request = reader.readLine();
-//                //вернем клиенту запрос
-//                String response = "Сервер получил от вас" + request;
-//                System.out.println(response);
-//                writer.write(response);
-//                writer.newLine();
-//                writer.flush();
-
-//идём писать клиента
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                break;
-//            }
-//        }
-//    }
-//}
-
-
-/* не совсем удачная попытка многопоточном режиме */
-//               //по сути сервак должен от всех пользователей получать сообщение вид имя: сообщение и всем его рассылать, кроме отправителя получается.
-////                    System.out.println("Клиент подключился");
-////                    //приветствуем нового участника
-////                    writer.write("Вы вошли в чат");
-////                    writer.newLine();
-////                    writer.flush();
-//
-//                //посмотрим запрос клиента и отправим его всем, и по сути, наверное, это уже поток
-//                new Thread(() -> {
-//
-//                    //для записи клиенту
-//                    try (Socket client = serverSocket.accept();
-//                         BufferedWriter writer =
-//                                 new BufferedWriter(
-//                                         new OutputStreamWriter(
-//                                                 client.getOutputStream()));
-//                         //для чтения клиента
-//                         BufferedReader reader =
-//                                 new BufferedReader(
-//                                         new InputStreamReader(
-//                                                 client.getInputStream()))) {
-//                        writer.write("Enter the name thread");
-//                        writer.newLine();
-//                        writer.flush();
-//                        System.out.println(Thread.currentThread().getName());
-//                        String nameThread = reader.readLine();
-//                        Thread.currentThread().setName(nameThread);
-//                        System.out.println(Thread.currentThread().getName());
-//
-//
-//                        //здесь делаем бесконечный цикл отправки и получения сообщений от клиента и по условию выходим.
-//                        while (true) {
-//                            String req = reader.readLine();
-//                            //вернем клиенту запрос
-//                            //надо здесь сделать рассылку всем клиентам
-//                            //осталось узнать как понять кто подключен
-//                            //response = request;
-//                            System.out.println(response);
-//                            if ("/exit".equals(req)) {
-//                                System.out.println("пользователь??? вышел из чата");
-//                                break;
-//                            }
-//                            if (!req.equals(request)) {
-//                                //wait();
-//                                //эта часть получается должна на сервере ждать сообщения от любого пользователя и отправлять его всем
-//                                //но тогда получается сервак не статик
-//                                writer.write(req);
-//                                writer.newLine();
-//                                writer.flush();
-//                            }
-//
-//
-//                        }
-//
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        System.out.println("полетел цикл отправки сообщений");
-//                    }
-//                }).start();

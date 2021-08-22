@@ -40,7 +40,6 @@ public class ServerForClientInMultiThread extends Thread {
                 }
 
         } catch (IOException e) {
-           // e.printStackTrace();
             this.shutDownService();
         }
     }
@@ -57,7 +56,6 @@ public class ServerForClientInMultiThread extends Thread {
                     }
                 }
             } catch (IOException ignored) {
-                // e.printStackTrace();
             }
         }
 

@@ -13,18 +13,22 @@ public class Client {
     protected static final Logger LOGGER = Logger.getLogger("ClientLogger");
 
     public static void main(String[] args) {
+
+        //Выбор имени для участия в чате;+
+        //Прочитать настройки приложения из файла настроек - например, номер порта сервера;+
+        //Подключение к указанному в настройках серверу;+
+        //Для выхода из чата нужно набрать команду выхода - “/exit”;+
+        //Каждое сообщение участников должно записываться в текстовый файл - файл логирования. При каждом запуске приложения файл должен дополняться.+
+
         //запускаем logger
         setupLogger();
         //Прочитать настройки приложения из файла настроек - например, номер порта сервера;
         clientSettings();
         //и запускаем циклы прослушивания и отправки в многопоточном режиме
         new ClientMultiThread(host, port);
-
-        //Для выхода из чата нужно набрать команду выхода - “/exit”;
-        //Каждое сообщение участников должно записываться в текстовый файл - файл логирования. При каждом запуске приложения файл должен дополняться.
     }
 
-    public static void setupLogger(){
+    public static void setupLogger() {
         LogManager.getLogManager().reset();//сбрасываем настройки, можно методом отключения
 
         /*
@@ -68,9 +72,10 @@ public class Client {
         } catch (IOException e) {
             System.out.println("Файл настроек не найден");
             LOGGER.log(Level.CONFIG, "Файл настроек не найден");
-            //можно добавить запись настроек в руном режиме, но тут не критично уже.
+            //можно добавить запись настроек в ручном режиме, но тут не критично уже.
         }
     }
+
     public static String getCurrentDate() {
         Date time;
         String dTime;
@@ -82,48 +87,3 @@ public class Client {
         return " { " + dTime + " } ";
     }
 }
-
-/*попытка номер раз*/
-//        //Подключение к указанному в настройках серверу;
-//        try (Socket socket = new Socket(host, port);
-//             BufferedWriter writer =
-//                     new BufferedWriter(
-//                             new OutputStreamWriter(
-//                                     socket.getOutputStream()));
-//             BufferedReader reader =
-//                     new BufferedReader(
-//                             new InputStreamReader(
-//                                     socket.getInputStream()))) {
-//
-//            System.out.println("Вы вошли в чат");
-//            //здесь бесконечный цикл отправки и получения сообщений
-//            //хотя, наверное, надо сделать что-то типа ожидания и получения, так как сервак будет рассылать сообщения
-//            String request;
-//            String response;
-//            while (true) {
-//                System.out.print(">>");
-//                request = scanner.nextLine();
-//                //отправим сообщение
-//                writer.write(request);
-//                writer.newLine();
-//                writer.flush();
-//                if ("/exit".equals(request)) {
-//                    System.out.println("Вы вышли из чата");
-//                    break;
-//                }
-//                //получим ответ
-//                response = reader.readLine();
-//                System.out.println("Response: " + response);
-//            }
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-//        //по сути у клиента  в большей степени такой же функционал как у сервера
-//
-//        //Выбор имени для участия в чате;
-//        System.out.println("Введите своё имя");
-//        name = scanner.nextLine();

@@ -28,7 +28,6 @@ public class ClientMultiThread {
             new WriteMessage().start();
             Client.LOGGER.log(Level.INFO, "созданы потоки чтения и отправки");
         } catch (IOException e) {
-            //e.printStackTrace();
             //закрываем сокет при любой ошибке, кроме ошибки конструктора
             ClientMultiThread.this.shutDownService();
             Client.LOGGER.log(Level.WARNING, "Не удалось создать потоки чтения и отправки");
@@ -45,7 +44,6 @@ public class ClientMultiThread {
             out.write("В чат зашёл " + nickname + " " + Client.getCurrentDate() + "\n");
             out.flush();
         } catch (IOException ignored) {
-            // e.printStackTrace();
             Client.LOGGER.log(Level.WARNING, "Не удалось войти в чат");
         }
     }
@@ -59,7 +57,6 @@ public class ClientMultiThread {
                 Client.LOGGER.log(Level.CONFIG, "приложение выключено");
             }
         } catch (IOException ignored) {
-            //  e.printStackTrace();
             Client.LOGGER.log(Level.WARNING, "не удалось выключить приложение");
         }
     }
@@ -111,7 +108,6 @@ public class ClientMultiThread {
                     }
 
                 } catch (IOException e) {
-                    //e.printStackTrace();
                     ClientMultiThread.this.shutDownService();
                     Client.LOGGER.log(Level.WARNING, "Полетел цикл отправки сообщений");
                 }
