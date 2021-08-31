@@ -3,7 +3,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -116,7 +115,7 @@ public class Server {
 
         //запускаем процесс выделения нового потока для клиента, ждем подключения, при подключении передаем сокет клиента в лист
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Сервер запущен" + getCurrentDate());
+            System.out.println("Сервер запущен" + getCurrentDate());//инфо в консоль для запускающего сервер
             LOGGER.log(Level.INFO, "Сервер запущен");
             //оборачиваем подключение клиента в вечный цикл, для возможности подключения любого кол-ва клиентов
             while (true) {

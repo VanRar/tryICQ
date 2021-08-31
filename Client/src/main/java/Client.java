@@ -58,12 +58,12 @@ public class Client {
         }
     }
 
-    public static void clientSettings() {
+    public static boolean clientSettings() {
         Properties settings = new Properties();
         try {
             //выгрузим файл настроек
             settings.load(new FileInputStream("src/main/resources/settings.properties"));
-            System.out.println(settings);
+            System.out.println(settings);//выведем настройки для пользователя
             //прочитаем требуемые значения
             host = settings.getProperty("host");
             System.out.println("Хост сервера: " + host);
@@ -71,10 +71,12 @@ public class Client {
             System.out.println("Порт сервера: " + port);
             LOGGER.log(Level.CONFIG, "Файл настроек найден, настройки загружены");
         } catch (IOException e) {
-            System.out.println("Файл настроек не найден");
+            System.out.println("Файл настроек не найден");//выведем сообщение для пользователя
             LOGGER.log(Level.CONFIG, "Файл настроек не найден");
+            return false;
             //можно добавить запись настроек в ручном режиме, но тут не критично уже.
         }
+        return true;
     }
 
     public static String getCurrentDate() {
