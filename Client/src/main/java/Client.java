@@ -11,6 +11,7 @@ public class Client {
     public static String host;
     public static int port;
     protected static final Logger LOGGER = Logger.getLogger("ClientLogger");
+    protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss"); //устанавливаем формат даты
 
     public static void main(String[] args) {
 
@@ -79,11 +80,9 @@ public class Client {
     public static String getCurrentDate() {
         Date time;
         String dTime;
-        SimpleDateFormat dateFormat;
 
         time = new Date();//выставляем текущую дату
-        dateFormat = new SimpleDateFormat("HH:mm:ss"); //устанавливаем формат даты
-        dTime = dateFormat.format(time);
+        dTime = DATE_FORMAT.format(time);
         return " { " + dTime + " } ";
     }
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -15,12 +16,15 @@ public class Server {
     public static Scanner scanner = new Scanner(System.in);
     public static int port;
     protected static final Logger LOGGER = Logger.getLogger("ServerLogger");
+    protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss"); //устанавливаем формат даты
 
     //список подключений с потоками ввода и вывода, по сути сервер для каждого клиента
-    public static LinkedList<ServerForClientInMultiThread> clientList = new LinkedList<>();
+   // public static LinkedList<ServerForClientInMultiThread> clientList = new LinkedList<>();
+    //заменим на потокобезопасную, не могу пока аргументированно сказать почему именно такая, кроме как то что она
+    // потокобезопасная и по нааполнению мне подходит, по сути сортировка мне тут не требуется, но пусть будет такая
+    protected static ConcurrentSkipListSet<ServerForClientInMultiThread> clientListCSLM = new ConcurrentSkipListSet<>();
 
     public static void main(String[] args) {
-
 
         //Установка порта для подключения клиентов через файл настроек (например, settings.txt);+
         //Возможность подключиться к серверу в любой момент и присоединиться к чату;+
@@ -55,6 +59,7 @@ public class Server {
             //выгрузим файл настроек
             settings.load(new FileInputStream("src/main/resources/settings.properties"));
             //прочитаем требуемые значения
+            //выведем настройки в консоль для пользователя, запускающего сервер
             System.out.println("Порт сервера: " + settings.getProperty("port"));
             System.out.println("Хост: " + settings.getProperty("host"));
             thereAreSettings = true;
@@ -109,7 +114,7 @@ public class Server {
             e.printStackTrace();
         }
 
-        //запускаем сервер, ждем подключения, при подключении передаем сокет клиента в лист
+        //запускаем процесс выделения нового потока для клиента, ждем подключения, при подключении передаем сокет клиента в лист
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен" + getCurrentDate());
             LOGGER.log(Level.INFO, "Сервер запущен");
@@ -117,7 +122,10 @@ public class Server {
             while (true) {
                 Socket client = serverSocket.accept();
                 try {
-                    clientList.add(new ServerForClientInMultiThread(client));
+//                    clientList.add(new ServerForClientInMultiThread(client));
+//                    clientList.getLast().start();
+                    clientListCSLM.add(new ServerForClientInMultiThread(client));
+                    clientListCSLM.last().start();
                     LOGGER.log(Level.INFO, "Зашел новый клиент");
                 } catch (IOException e) {
                     client.close();
@@ -134,11 +142,9 @@ public class Server {
     public static String getCurrentDate() {
         Date time;
         String dTime;
-        SimpleDateFormat dateFormat;
 
         time = new Date();//выставляем текущую дату
-        dateFormat = new SimpleDateFormat("HH:mm:ss"); //устанавливаем формат даты
-        dTime = dateFormat.format(time);
+        dTime = DATE_FORMAT.format(time);
         return " { " + dTime + " } ";
     }
 }
