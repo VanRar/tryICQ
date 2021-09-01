@@ -78,7 +78,6 @@ public class ClientMultiThread {
                     Client.LOGGER.log(Level.INFO, "получено сообщение: " + message);
                 }
             } catch (IOException e) {
-                //e.printStackTrace();
                 ClientMultiThread.this.shutDownService();
                 Client.LOGGER.log(Level.WARNING, "полетел цикл чтения сообщений");
             }

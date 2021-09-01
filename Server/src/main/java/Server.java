@@ -18,17 +18,11 @@ public class Server {
     protected static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss"); //устанавливаем формат даты
 
     //список подключений с потоками ввода и вывода, по сути сервер для каждого клиента
-   // public static LinkedList<ServerForClientInMultiThread> clientList = new LinkedList<>();
     //заменим на потокобезопасную, не могу пока аргументированно сказать почему именно такая, кроме как то что она
-    // потокобезопасная и по нааполнению мне подходит, по сути сортировка мне тут не требуется, но пусть будет такая
+    // потокобезопасная и по наполнению мне подходит, по сути сортировка мне тут не требуется, но пусть будет такая
     protected static ConcurrentSkipListSet<ServerForClientInMultiThread> clientListCSLM = new ConcurrentSkipListSet<>();
 
     public static void main(String[] args) {
-
-        //Установка порта для подключения клиентов через файл настроек (например, settings.txt);+
-        //Возможность подключиться к серверу в любой момент и присоединиться к чату;+
-        //Отправка новых сообщений клиентам;+
-        //Запись всех отправленных через сервер сообщений с указанием имени пользователя и времени отправки.+
 
         setupLogger();
         //проверяем наличие настроек сервера и заполняем их
@@ -121,8 +115,6 @@ public class Server {
             while (true) {
                 Socket client = serverSocket.accept();
                 try {
-//                    clientList.add(new ServerForClientInMultiThread(client));
-//                    clientList.getLast().start();
                     clientListCSLM.add(new ServerForClientInMultiThread(client));
                     clientListCSLM.last().start();
                     LOGGER.log(Level.INFO, "Зашел новый клиент");

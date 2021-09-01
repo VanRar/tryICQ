@@ -34,17 +34,6 @@ public class ServerForClientInMultiThread extends Thread implements Comparable<S
                     break;
                 }
                 Server.LOGGER.log(Level.INFO, message);
-//                for (ServerForClientInMultiThread allClient : Server.clientList) {
-//                    if (allClient == this) continue; //кроме отправителя
-//                    allClient.send(message);
-//                }
-                //меняем на потокобезопасную коллекцию
-//                    for (ServerForClientInMultiThread allClient : Server.clientListCSLM) {
-//                        allClient.send(message);
-//
-//                    }
-
-
                     for(ServerForClientInMultiThread allClient : Server.clientListCSLM){
                         if(allClient == this) continue; //кроме отправителя
                         allClient.send(message);
@@ -62,11 +51,6 @@ public class ServerForClientInMultiThread extends Thread implements Comparable<S
                 socket.close();
                 in.close();
                 out.close();
-//                for (ServerForClientInMultiThread client : Server.clientList) {
-//                    if (client.equals(this)) client.interrupt();
-//                    Server.clientList.remove(this);
-//                }
-                //меняем на потокобезопасную коллекцию
                 Server.clientListCSLM.remove(this);
 
             }
@@ -81,11 +65,6 @@ public class ServerForClientInMultiThread extends Thread implements Comparable<S
         } catch (IOException ignored) {
         }
     }
-
-//    @Override
-//    public int compare(ServerForClientInMultiThread o1, ServerForClientInMultiThread o2) {
-//        return o1.hashCode() - o2.hashCode();
-//    }
 
     @Override
     public boolean equals(Object o) {

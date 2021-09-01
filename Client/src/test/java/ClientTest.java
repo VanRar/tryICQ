@@ -24,6 +24,8 @@ class ClientTest {
     @org.junit.jupiter.api.Test
     void clientSettingsTest(){
         //частично правильно, правда метод смотрит родительскую папку относительно себя, то есть папку расположенную в Client
+        //странно то, что в данном случае и метод смотрит на свою папку
+        //надо будет почитать про путь и наверное решение хранить файл настроек в отдельном пакете было такое себе, хотя вроде логичное
         File file = new File("src/main/resources/settings.properties");
         boolean expected = file.exists();
         assertEquals(expected, Client.clientSettings());
